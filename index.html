@@ -4,6 +4,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>PARKER — Photo / Video / Mkt</title>
+<meta name="description" content="Parker — photographer, videographer and marketer. Fitness, athletes and brands across Mexico, the US and Japan.">
+<link rel="canonical" href="https://parkergx.com/">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://parkergx.com/">
+<meta property="og:title" content="PARKER — Photo / Video / Mkt">
+<meta property="og:description" content="Photographer, videographer and marketer. Gymshark, RAW, Ray-Ban Meta, Olympia and more.">
+<meta property="og:image" content="https://parkergx.com/img/gs26/gs26_b11.jpg">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;600;900&family=Space+Mono:wght@400;700&family=Dela+Gothic+One&family=DotGothic16&display=swap" rel="stylesheet">
@@ -151,7 +159,7 @@
   .contact{text-align:center;position:relative;overflow:hidden}
   .contact .big{font-family:var(--disp);font-weight:900;font-size:clamp(48px,12vw,190px);line-height:.85;letter-spacing:-.05em;text-transform:uppercase}
   .contact .big .o{-webkit-text-stroke:2px var(--acid);color:transparent}
-  .mail{display:inline-flex;align-items:center;gap:14px;margin-top:42px;padding:16px 26px;border:1.5px solid var(--acid);border-radius:99px;
+  .mail{text-decoration:none;display:inline-flex;align-items:center;gap:14px;margin-top:42px;padding:16px 26px;border:1.5px solid var(--acid);border-radius:99px;
     font-size:clamp(14px,1.8vw,20px);letter-spacing:.06em;background:none;color:var(--ink);font-family:var(--mono);cursor:none;transition:.2s}
   .mail:hover{background:var(--acid);color:#000}
   .copied{display:block;margin-top:14px;font-size:11px;letter-spacing:.2em;color:var(--acid);height:14px}
@@ -263,16 +271,11 @@
 <section class="contact" id="contact">
   <div class="idx reveal">(04)</div>
   <div class="big reveal"><span data-i18n="c1">Let's</span><br><span class="o" data-i18n="c2">shoot</span></div>
-  <button class="mail reveal" id="mail">hello@yourdomain.com <span>↗</span></button>
-  <span class="copied" id="copied"></span>
-  <div class="socials reveal">
-    <a href="https://instagram.com/" target="_blank" rel="noopener">Instagram</a>
-    <a href="https://vimeo.com/" target="_blank" rel="noopener">Vimeo</a>
-    <a href="https://tiktok.com/" target="_blank" rel="noopener">TikTok</a>
-  </div>
+  <a class="mail reveal" href="https://instagram.com/parker_gx" target="_blank" rel="noopener">@parker_gx <span>↗</span></a>
+  <span class="copied" data-i18n="dm">✱ DM ON INSTAGRAM FOR BOOKINGS ✱</span>
 </section>
 
-<footer><span>© 2026 PARKER</span><span>MX ⇄ US ⇄ JP</span><span data-i18n="foot">Built loud. Shot louder.</span></footer>
+<footer><span>© 2026 PARKER — <a href="https://parkergx.com" style="text-decoration:none">PARKERGX.COM</a></span><span>MX ⇄ US ⇄ JP</span><span data-i18n="foot">Built loud. Shot louder.</span></footer>
 
 <div class="lb" id="lb">
   <button class="close" id="lbClose">CLOSE ✕</button>
@@ -341,11 +344,11 @@ const WORK = [
     en:'Campaign film for Ray-Ban Meta with Belcast — a gym session mixing his own POV through the glasses with cinematic coverage.',
     es:'Film de campaña para Ray-Ban Meta con Belcast — una sesión de gym que mezcla su POV desde los lentes con tomas cinematográficas.',
     ja:'BelcastとのRay-Ban Metaキャンペーン映像 — グラス越しのPOVとシネマティックな映像を組み合わせたジムセッション。'},
-  {id:7,cat:'brand',w:'w6',title:'World Gym x Belcast',yr:'—',client:'World Gym',role:'PHOTO + DIRECTION',fmt:'PHOTO + DIRECTION',
+  {id:7,hidden:true,cat:'brand',w:'w6',title:'World Gym x Belcast',yr:'—',client:'World Gym',role:'PHOTO + DIRECTION',fmt:'PHOTO + DIRECTION',
     en:'Belcast photoshoot at World Gym, from script and pre-production to final frames.',
     es:'Sesión de Belcast en World Gym, del guion y la preproducción a las fotos finales.',
     ja:'台本・プリプロダクションから撮影まで手がけた、World GymでのBelcast撮影。'},
-  {id:12,cat:'brand',w:'w6',title:'Belcast Signature Flavor',yr:'—',client:'RAW / Bum Energy',role:'PHOTO + VIDEO',fmt:'PHOTO + VIDEO',
+  {id:12,hidden:true,cat:'brand',w:'w6',title:'Belcast Signature Flavor',yr:'—',client:'RAW / Bum Energy',role:'PHOTO + VIDEO',fmt:'PHOTO + VIDEO',
     en:'Content for Belcast\'s signature flavor with RAW / Bum Energy.',
     es:'Contenido para el sabor firma de Belcast con RAW / Bum Energy.',
     ja:'RAW / Bum EnergyのBelcastシグネチャーフレーバーのコンテンツ。'}
@@ -362,20 +365,20 @@ const I18N = {
     tagline:'Fitness <span>✱</span> Sports <span>✱</span> Brands <span>✱</span> Motion',localtime:'Local time',move:'Move your cursor',locs:'MEXICO <b>MX</b><br>UNITED STATES <b>US</b><br>JAPAN <b>JP</b>',
     work_title:'Selected <em>Work</em>',f_all:'All',f_brand:'Brands',f_ath:'Athlete',f_ev:'Events',f_mus:'Music',f_mkt:'Mkt',svc_title:'What I <em>Do</em>',
     cl_title:'Worked <em>With</em>',next:'NEXT?',c1:"Let's",c2:'shoot',foot:'Built loud. Shot louder.',
-    mq:['PHOTO','VIDEO','FITNESS','SPORTS','BRANDS','MX ⇄ US ⇄ JP','BOOK NOW'],copied:'✱ COPIED TO CLIPBOARD ✱',copyfail:'✱ SELECT AND COPY THE ADDRESS ✱',
+    mq:['PHOTO','VIDEO','FITNESS','SPORTS','BRANDS','MX ⇄ US ⇄ JP','BOOK NOW'],copied:'✱ COPIED TO CLIPBOARD ✱',copyfail:'✱ SELECT AND COPY THE ADDRESS ✱',dm:'✱ DM ON INSTAGRAM FOR BOOKINGS ✱',
     client:'Client',role:'Role',year:'Year',view:'VIEW'},
   es:{nav_work:'Trabajo',nav_services:'Servicios',nav_contact:'Contacto',kicker:'✱ FOTO / VIDEO / MKT ✱',
     tagline:'Fitness <span>✱</span> Deportes <span>✱</span> Marcas <span>✱</span> Movimiento',localtime:'Hora local',move:'Mueve el cursor',locs:'MÉXICO <b>MX</b><br>ESTADOS UNIDOS <b>US</b><br>JAPÓN <b>JP</b>',
     work_title:'Trabajo <em>Selecto</em>',f_all:'Todo',f_brand:'Marcas',f_ath:'Atleta',f_ev:'Eventos',f_mus:'Música',f_mkt:'Mkt',svc_title:'Lo que <em>Hago</em>',
     cl_title:'He trabajado <em>con</em>',next:'¿SIGUE?',c1:'Vamos a',c2:'grabar',foot:'Hecho fuerte. Grabado más fuerte.',
-    mq:['FOTO','VIDEO','FITNESS','DEPORTES','MARCAS','MX ⇄ US ⇄ JP','RESERVA'],copied:'✱ COPIADO ✱',copyfail:'✱ SELECCIONA Y COPIA EL CORREO ✱',
+    mq:['FOTO','VIDEO','FITNESS','DEPORTES','MARCAS','MX ⇄ US ⇄ JP','RESERVA'],copied:'✱ COPIADO ✱',copyfail:'✱ SELECCIONA Y COPIA EL CORREO ✱',dm:'✱ ESCRÍBEME POR DM PARA RESERVAR ✱',
     client:'Cliente',role:'Rol',year:'Año',view:'VER'},
   ja:{nav_work:'作品',nav_services:'サービス',nav_contact:'連絡',kicker:'✱ 写真 / 映像 / マーケティング ✱',
     tagline:'フィットネス <span>✱</span> スポーツ <span>✱</span> ブランド <span>✱</span> モーション',localtime:'現地時間',move:'カーソルを動かして',
     locs:'メキシコ <b>MX</b><br>アメリカ <b>US</b><br>日本 <b>JP</b>',
     work_title:'セレクト <em>ワーク</em>',f_all:'すべて',f_brand:'ブランド',f_ath:'アスリート',f_ev:'イベント',f_mus:'音楽',f_mkt:'マーケ',svc_title:'できる <em>こと</em>',
     cl_title:'クライアント <em>実績</em>',next:'次は？',c1:'一緒に',c2:'撮ろう',foot:'大胆に作り、もっと大胆に撮る。',
-    mq:['写真','映像','フィットネス','スポーツ','ブランド','MX ⇄ US ⇄ JP','予約受付中'],copied:'✱ コピーしました ✱',copyfail:'✱ アドレスを選択してコピー ✱',
+    mq:['写真','映像','フィットネス','スポーツ','ブランド','MX ⇄ US ⇄ JP','予約受付中'],copied:'✱ コピーしました ✱',copyfail:'✱ アドレスを選択してコピー ✱',dm:'✱ ご依頼はインスタのDMへ ✱',
     client:'クライアント',role:'担当',year:'年',view:'見る'}
 };
 const EMAIL = 'hello@yourdomain.com';
@@ -412,7 +415,7 @@ function media(w){
   return art(w.id);
 }
 function renderWork(){
-  grid.innerHTML = WORK.map((w,i)=>`
+  grid.innerHTML = WORK.filter(w=>!w.hidden).map((w,i)=>`
     <article class="card ${w.w} reveal" data-cat="${w.cat}" data-id="${w.id}">
       <div class="frame">
         <div class="art">${media(w)}</div>
@@ -488,11 +491,6 @@ document.getElementById('lbClose').addEventListener('click',closeLb);
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeLb()});
 
 /* email copy */
-document.getElementById('mail').addEventListener('click',async()=>{
-  const out=document.getElementById('copied');
-  try{await navigator.clipboard.writeText(EMAIL);out.textContent=I18N[lang].copied}catch(e){out.textContent=I18N[lang].copyfail}
-  setTimeout(()=>out.textContent='',2400);
-});
 
 /* cursor */
 const cur=document.getElementById('cursor'), lab=document.getElementById('cursorLabel');
