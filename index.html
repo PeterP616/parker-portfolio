@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PARKER — Photo / Video / Mkt</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;600;900&family=Space+Mono:wght@400;700&family=Dela+Gothic+One&family=DotGothic16&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#070707; --ink:#f2f2ee; --acid:#c8ff00; --pink:#ff2bd6; --blue:#4b5cff;
+    --dim:#7a7a74; --line:rgba(242,242,238,.14);
+    --mono:'Space Mono','DotGothic16',ui-monospace,monospace; --disp:'Unbounded','Dela Gothic One',system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--ink);font-family:var(--mono);overflow-x:hidden;cursor:none}
+  @media (hover:none){body{cursor:auto}.cursor{display:none}}
+  a{color:inherit}
+  ::selection{background:var(--acid);color:#000}
+
+  /* grain */
+  body::after{content:"";position:fixed;inset:-50%;pointer-events:none;z-index:90;opacity:.09;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    animation:grain 1s steps(4) infinite}
+  @keyframes grain{0%{transform:translate(0,0)}25%{transform:translate(-3%,2%)}50%{transform:translate(2%,-3%)}75%{transform:translate(-1%,3%)}}
+
+  /* cursor */
+  .cursor{position:fixed;left:0;top:0;width:34px;height:34px;margin:-17px 0 0 -17px;border:1.5px solid var(--acid);border-radius:50%;
+    pointer-events:none;z-index:100;mix-blend-mode:difference;transition:width .25s,height .25s,margin .25s,background .25s}
+  .cursor::before,.cursor::after{content:"";position:absolute;background:var(--acid);left:50%;top:50%}
+  .cursor::before{width:44px;height:1px;transform:translate(-50%,-50%)}
+  .cursor::after{width:1px;height:44px;transform:translate(-50%,-50%)}
+  .cursor.big{width:90px;height:90px;margin:-45px 0 0 -45px;background:var(--acid)}
+  .cursor-label{position:fixed;left:0;top:0;z-index:101;pointer-events:none;font-size:10px;letter-spacing:.15em;color:#000;
+    transform:translate(-50%,-50%);opacity:0;transition:opacity .2s;font-weight:700}
+  .cursor-label.on{opacity:1}
+
+  /* nav */
+  nav{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;justify-content:space-between;align-items:center;
+    padding:18px clamp(16px,3vw,36px);font-size:12px;letter-spacing:.12em;text-transform:uppercase;mix-blend-mode:difference}
+  nav .logo{font-family:var(--disp);font-weight:900;font-size:15px;letter-spacing:.02em}
+  nav .links{display:flex;gap:22px;align-items:center}
+  nav .links a{text-decoration:none;position:relative}
+  nav .links a:hover{color:var(--acid)}
+  .lang{display:flex;border:1px solid var(--ink);border-radius:99px;overflow:hidden}
+  .lang button{background:none;border:0;color:var(--ink);font:inherit;padding:4px 10px;cursor:none}
+  .lang button.on{background:var(--ink);color:#000}
+
+  /* hero */
+  .hero{position:relative;height:100vh;min-height:620px;overflow:hidden;display:grid;place-items:center}
+  #field{position:absolute;inset:0;width:100%;height:100%}
+  .hero-inner{position:relative;z-index:2;text-align:center;pointer-events:none}
+  .kicker{font-size:12px;letter-spacing:.35em;color:var(--acid);margin-bottom:18px}
+  .wordmark{font-family:var(--disp);font-weight:900;font-size:clamp(64px,17vw,260px);line-height:.82;letter-spacing:-.04em;
+    background:linear-gradient(175deg,#fff 0%,#cfcfcf 18%,#5d5d5d 36%,#fafafa 48%,#8a8a8a 62%,#e9e9e9 78%,#3a3a3a 100%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;filter:url(#warp) drop-shadow(0 0 30px rgba(200,255,0,.15));
+    pointer-events:auto}
+  .tagline{margin-top:22px;font-size:clamp(12px,1.3vw,15px);letter-spacing:.2em;text-transform:uppercase}
+  .tagline span{color:var(--acid)}
+  .corner{position:absolute;z-index:3;font-size:11px;letter-spacing:.14em;line-height:1.7;text-transform:uppercase}
+  .corner b{color:var(--acid);font-weight:400}
+  .c-bl{left:clamp(16px,3vw,36px);bottom:28px}
+  .c-br{right:clamp(16px,3vw,36px);bottom:28px;text-align:right}
+  .sticker{position:absolute;z-index:3;right:clamp(16px,7vw,110px);top:22vh;width:150px;height:150px;pointer-events:none}
+  .sticker svg{width:100%;height:100%;animation:spin 14s linear infinite}
+  .sticker .star{position:absolute;inset:0;display:grid;place-items:center;font-size:44px;color:var(--acid)}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .scroll-cue{position:absolute;z-index:3;left:50%;bottom:26px;transform:translateX(-50%);font-size:11px;letter-spacing:.3em;animation:bob 1.6s ease-in-out infinite}
+  @keyframes bob{50%{transform:translate(-50%,6px)}}
+
+  /* marquee */
+  .marquee{border-block:1px solid var(--ink);background:var(--acid);color:#000;overflow:hidden;white-space:nowrap;transform:rotate(-1.5deg) scale(1.03);margin:30px 0}
+  .marquee .track{display:inline-block;padding:14px 0;font-family:var(--disp);font-weight:900;font-size:clamp(22px,3.4vw,44px);animation:mq 22s linear infinite}
+  .marquee .track span{margin:0 .5em}
+  @keyframes mq{to{transform:translateX(-50%)}}
+
+  section{padding:clamp(70px,10vw,140px) clamp(16px,3vw,36px)}
+  .sec-head{display:flex;justify-content:space-between;align-items:end;gap:20px;flex-wrap:wrap;margin-bottom:40px;border-bottom:1px solid var(--line);padding-bottom:18px}
+  .sec-head h2{font-family:var(--disp);font-weight:900;font-size:clamp(40px,7vw,104px);line-height:.9;letter-spacing:-.03em;text-transform:uppercase}
+  .sec-head h2 em{font-style:normal;-webkit-text-stroke:1.5px var(--ink);color:transparent}
+  .idx{font-size:12px;color:var(--dim);letter-spacing:.2em}
+
+  /* filters */
+  .filters{display:flex;gap:8px;flex-wrap:wrap}
+  .filters button{font:inherit;font-size:12px;letter-spacing:.14em;text-transform:uppercase;background:none;color:var(--ink);
+    border:1px solid var(--ink);border-radius:99px;padding:8px 16px;cursor:none;transition:.2s}
+  .filters button:hover{border-color:var(--acid);color:var(--acid)}
+  .filters button.on{background:var(--acid);border-color:var(--acid);color:#000}
+
+  /* work grid */
+  .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:clamp(12px,1.6vw,22px)}
+  .card{grid-column:span 4;position:relative;cursor:none;perspective:900px}
+  .card.w6{grid-column:span 6}.card.w8{grid-column:span 8}.card.w12{grid-column:span 12}
+  @media (max-width:860px){.card,.card.w6,.card.w8,.card.w12{grid-column:span 12}}
+  .card .frame{position:relative;aspect-ratio:4/5;overflow:hidden;border:1px solid var(--line);transition:transform .35s cubic-bezier(.2,.8,.2,1)}
+  .card.w8 .frame,.card.w6 .frame{aspect-ratio:16/10}
+  .card.w12 .frame{aspect-ratio:21/8}
+  .card .art{position:absolute;inset:0}
+  .card .art svg{width:100%;height:100%;display:block}
+  .card .art img,.card .art video,.card .rgb img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s cubic-bezier(.2,.8,.2,1)}
+  .card:hover .art img,.card:hover .art video{transform:scale(1.05)}
+  .card .tri{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;height:100%;background:#000}
+  .card .tri video{width:100%;height:100%;object-fit:cover;display:block}
+  .card .yt-ph{color:var(--acid);font-size:15px;font-weight:700;letter-spacing:.2em}
+  .card .yt-ph::before{content:'';position:absolute;width:190px;height:54px;background:#000;border:1.5px solid var(--acid);z-index:-1}
+  .card .yt-ph{z-index:1;isolation:isolate}
+  .lb .lb-art{display:flex;flex-direction:column;gap:10px;background:#000}
+  .lb .lb-art>video,#lbMain,#lbVid{flex:1;min-height:0;width:100%;object-fit:contain;display:block}
+  .lb .thumbs{display:flex;gap:6px;overflow-x:auto;padding:0 6px 6px}
+  .lb .thumbs img{height:64px;width:auto;opacity:.45;cursor:none;border:1px solid transparent;transition:.2s}
+  .lb .thumbs .th{position:relative;flex:none}.lb .thumbs .th.vid::after{content:'▶';position:absolute;inset:0;display:grid;place-items:center;color:var(--acid);font-size:18px;pointer-events:none}
+  .lb .thumbs img:hover{opacity:.8}.lb .thumbs img.on{opacity:1;border-color:var(--acid)}
+  .yt{list-style:none;margin-top:26px;border-top:1px solid var(--line)}
+  .yt a{display:grid;grid-template-columns:34px 1fr auto;gap:10px;padding:12px 0;border-bottom:1px solid var(--line);text-decoration:none;font-size:13px;line-height:1.45}
+  .yt a span{color:var(--dim)}.yt a b{color:var(--acid);font-weight:400}
+  .yt a:hover{color:var(--acid)}
+  .card .ph{position:absolute;inset:0;display:grid;place-items:center;font-size:11px;letter-spacing:.25em;color:rgba(255,255,255,.55);text-transform:uppercase}
+  .card .rgb{position:absolute;inset:0;mix-blend-mode:screen;opacity:0;transition:opacity .2s}
+  .card:hover .rgb{opacity:1;animation:glitch .5s steps(2) infinite}
+  @keyframes glitch{0%{transform:translate(4px,-2px);clip-path:inset(10% 0 60% 0)}50%{transform:translate(-5px,3px);clip-path:inset(55% 0 12% 0)}100%{transform:translate(2px,1px);clip-path:inset(30% 0 40% 0)}}
+  .card .tag{position:absolute;top:12px;left:12px;background:#000;color:var(--acid);font-size:10px;letter-spacing:.2em;padding:5px 8px;border:1px solid var(--acid)}
+  .card .num{position:absolute;top:12px;right:12px;font-family:var(--disp);font-weight:900;font-size:13px;mix-blend-mode:difference}
+  .card .meta{display:flex;justify-content:space-between;align-items:baseline;padding-top:12px;gap:12px}
+  .card h3{font-family:var(--disp);font-weight:600;font-size:clamp(16px,1.6vw,22px);text-transform:uppercase;letter-spacing:-.01em}
+  .card .yr{font-size:11px;color:var(--dim);letter-spacing:.15em}
+  .card.hide{display:none}
+
+  /* services */
+  .svc{border-top:1px solid var(--line)}
+  .svc-row{display:grid;grid-template-columns:80px 1fr auto;align-items:center;gap:20px;padding:26px 0;border-bottom:1px solid var(--line);position:relative;overflow:hidden;cursor:none}
+  .svc-row::before{content:"";position:absolute;inset:0;background:var(--acid);transform:scaleY(0);transform-origin:bottom;transition:transform .35s cubic-bezier(.2,.8,.2,1);z-index:0}
+  .svc-row:hover::before{transform:scaleY(1)}
+  .svc-row>*{position:relative;z-index:1;transition:color .2s}
+  .svc-row:hover>*{color:#000}
+  .svc-row .n{font-size:12px;color:var(--dim)}
+  .svc-row h4{font-family:var(--disp);font-weight:900;font-size:clamp(26px,4.6vw,64px);text-transform:uppercase;letter-spacing:-.03em;line-height:1}
+  .svc-row p{font-size:12px;max-width:300px;text-align:right;letter-spacing:.04em;line-height:1.6}
+  @media (max-width:700px){.svc-row{grid-template-columns:40px 1fr}.svc-row p{grid-column:2;text-align:left}}
+
+  /* clients */
+  .clients{display:grid;grid-template-columns:repeat(5,1fr);border:1px solid var(--line)}
+  @media (max-width:700px){.clients{grid-template-columns:repeat(2,1fr)}}
+  .client{aspect-ratio:1.5/1;display:grid;place-items:center;border:1px solid var(--line);font-family:var(--disp);font-weight:900;
+    font-size:clamp(14px,2vw,24px);text-transform:uppercase;letter-spacing:-.01em;transition:.25s;position:relative}
+  .client:hover{background:var(--ink);color:#000}
+  .client small{position:absolute;bottom:10px;font-family:var(--mono);font-weight:400;font-size:10px;letter-spacing:.15em;color:var(--dim)}
+
+  /* contact */
+  .contact{text-align:center;position:relative;overflow:hidden}
+  .contact .big{font-family:var(--disp);font-weight:900;font-size:clamp(48px,12vw,190px);line-height:.85;letter-spacing:-.05em;text-transform:uppercase}
+  .contact .big .o{-webkit-text-stroke:2px var(--acid);color:transparent}
+  .mail{display:inline-flex;align-items:center;gap:14px;margin-top:42px;padding:16px 26px;border:1.5px solid var(--acid);border-radius:99px;
+    font-size:clamp(14px,1.8vw,20px);letter-spacing:.06em;background:none;color:var(--ink);font-family:var(--mono);cursor:none;transition:.2s}
+  .mail:hover{background:var(--acid);color:#000}
+  .copied{display:block;margin-top:14px;font-size:11px;letter-spacing:.2em;color:var(--acid);height:14px}
+  .socials{display:flex;justify-content:center;gap:28px;margin-top:30px;font-size:12px;letter-spacing:.2em;text-transform:uppercase}
+  .socials a{text-decoration:none;border-bottom:1px solid var(--dim);padding-bottom:3px}
+  .socials a:hover{color:var(--acid);border-color:var(--acid)}
+  footer{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;padding:22px clamp(16px,3vw,36px);border-top:1px solid var(--line);font-size:11px;letter-spacing:.15em;color:var(--dim);text-transform:uppercase}
+
+  /* lightbox */
+  .lb{position:fixed;inset:0;z-index:80;background:rgba(7,7,7,.94);display:none;grid-template-columns:1.4fr 1fr;gap:30px;padding:clamp(70px,8vw,100px) clamp(16px,4vw,60px) 40px;backdrop-filter:blur(6px)}
+  .lb.on{display:grid;animation:lbin .35s cubic-bezier(.2,.8,.2,1)}
+  @keyframes lbin{from{opacity:0;clip-path:inset(0 0 100% 0)}to{opacity:1;clip-path:inset(0)}}
+  .lb .lb-art{border:1px solid var(--line);position:relative;overflow:hidden;min-height:300px}
+  .lb .lb-art svg{width:100%;height:100%;display:block}
+  .lb .lb-txt h3{font-family:var(--disp);font-weight:900;font-size:clamp(30px,4vw,60px);line-height:.95;text-transform:uppercase;letter-spacing:-.03em;margin:14px 0 22px}
+  .lb .lb-txt p{font-size:14px;line-height:1.75;color:#cfcfca;max-width:440px}
+  .lb dl{display:grid;grid-template-columns:auto 1fr;gap:8px 20px;margin-top:28px;font-size:12px;letter-spacing:.1em;text-transform:uppercase}
+  .lb dt{color:var(--dim)} .lb dd{color:var(--ink)}
+  .lb .close{position:absolute;top:22px;right:clamp(16px,3vw,36px);background:none;border:1px solid var(--ink);color:var(--ink);font:inherit;font-size:12px;letter-spacing:.2em;padding:8px 14px;border-radius:99px;cursor:none}
+  .lb .close:hover{background:var(--acid);color:#000;border-color:var(--acid)}
+  @media (max-width:860px){.lb{grid-template-columns:1fr;overflow:auto}.lb .lb-art{min-height:50vh}}
+
+  .reveal{opacity:0;transform:translateY(40px);transition:opacity .8s,transform .8s cubic-bezier(.2,.8,.2,1)}
+  .reveal.in{opacity:1;transform:none}
+
+  @media (prefers-reduced-motion:reduce){
+    *,*::before,*::after{animation:none!important;transition:none!important}
+    .reveal{opacity:1;transform:none}
+  }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute">
+  <filter id="warp">
+    <feTurbulence id="turb" type="fractalNoise" baseFrequency="0.008 0.02" numOctaves="2" seed="3" result="n"/>
+    <feDisplacementMap id="disp" in="SourceGraphic" in2="n" scale="10" xChannelSelector="R" yChannelSelector="G"/>
+  </filter>
+</svg>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-label" id="cursorLabel">VIEW</div>
+
+<nav>
+  <div class="logo">PARKER®</div>
+  <div class="links">
+    <a href="#work" data-i18n="nav_work">Work</a>
+    <a href="#services" data-i18n="nav_services">Services</a>
+    <a href="#contact" data-i18n="nav_contact">Contact</a>
+    <div class="lang"><button class="on" data-lang="en">EN</button><button data-lang="es">ES</button><button data-lang="ja">JP</button></div>
+  </div>
+</nav>
+
+<header class="hero">
+  <canvas id="field"></canvas>
+  <div class="hero-inner">
+    <div class="kicker" data-i18n="kicker">✱ PHOTO / VIDEO / MKT ✱</div>
+    <h1 class="wordmark" id="wordmark">PARKER</h1>
+    <div class="tagline" data-i18n-html="tagline">Fitness <span>✱</span> Sports <span>✱</span> Brands <span>✱</span> Motion</div>
+  </div>
+  <div class="sticker">
+    <svg viewBox="0 0 200 200"><defs><path id="circ" d="M100,100 m-78,0 a78,78 0 1,1 156,0 a78,78 0 1,1 -156,0"/></defs>
+      <text font-family="Space Mono" font-size="15.5" letter-spacing="3.2" fill="#f2f2ee"><textPath href="#circ" id="stickerText">AVAILABLE FOR BOOKING ✱ DISPONIBLE ✱ 2026 ✱ </textPath></text></svg>
+    <div class="star">✺</div>
+  </div>
+  <div class="corner c-bl" data-i18n-html="locs">MEXICO <b>MX</b><br>UNITED STATES <b>US</b><br>JAPAN <b>JP</b></div>
+  <div class="corner c-br"><span data-i18n="localtime">Local time</span> <b id="clock">--:--:--</b><br><span data-i18n="move">Move your cursor</span> <b>↯</b></div>
+  <div class="scroll-cue">SCROLL ↓</div>
+</header>
+
+<div class="marquee"><div class="track" id="mq"></div></div>
+
+<section id="work">
+  <div class="sec-head reveal">
+    <div><div class="idx">(01)</div><h2 data-i18n-html="work_title">Selected <em>Work</em></h2></div>
+    <div class="filters" id="filters">
+      <button class="on" data-f="all" data-i18n="f_all">All</button>
+      <button data-f="brand" data-i18n="f_brand">Brands</button>
+      <button data-f="athlete" data-i18n="f_ath">Athlete</button>
+      <button data-f="events" data-i18n="f_ev">Events</button>
+      <button data-f="music" data-i18n="f_mus">Music</button>
+      <button data-f="mkt" data-i18n="f_mkt">Mkt</button>
+    </div>
+  </div>
+  <div class="grid" id="grid"></div>
+</section>
+
+<section id="services">
+  <div class="sec-head reveal"><div><div class="idx">(02)</div><h2 data-i18n-html="svc_title">What I <em>Do</em></h2></div></div>
+  <div class="svc" id="svc"></div>
+</section>
+
+<section id="clients" style="padding-top:0">
+  <div class="sec-head reveal"><div><div class="idx">(03)</div><h2 data-i18n-html="cl_title">Worked <em>With</em></h2></div></div>
+  <div class="clients reveal">
+    <div class="client">Gymshark<small>APPAREL</small></div>
+    <div class="client">RAW<small>NUTRITION</small></div>
+    <div class="client">Olympia<small>EVENT</small></div>
+    <div class="client">Dragon Pharma<small>SUPPLEMENTS</small></div>
+    <div class="client">Belcast<small>ATHLETE</small></div>
+    <div class="client">TOP GYM<small>RGV, TX</small></div>
+    <div class="client">World Gym<small>GYM</small></div>
+    <div class="client">RGMNT<small>APPAREL</small></div>
+    <div class="client">Meta<small>RAY-BAN META</small></div>
+    <div class="client">Your brand<small data-i18n="next">NEXT?</small></div>
+  </div>
+</section>
+
+<section class="contact" id="contact">
+  <div class="idx reveal">(04)</div>
+  <div class="big reveal"><span data-i18n="c1">Let's</span><br><span class="o" data-i18n="c2">shoot</span></div>
+  <button class="mail reveal" id="mail">hello@yourdomain.com <span>↗</span></button>
+  <span class="copied" id="copied"></span>
+  <div class="socials reveal">
+    <a href="https://instagram.com/" target="_blank" rel="noopener">Instagram</a>
+    <a href="https://vimeo.com/" target="_blank" rel="noopener">Vimeo</a>
+    <a href="https://tiktok.com/" target="_blank" rel="noopener">TikTok</a>
+  </div>
+</section>
+
+<footer><span>© 2026 PARKER</span><span>MX ⇄ US ⇄ JP</span><span data-i18n="foot">Built loud. Shot louder.</span></footer>
+
+<div class="lb" id="lb">
+  <button class="close" id="lbClose">CLOSE ✕</button>
+  <div class="lb-art" id="lbArt"></div>
+  <div class="lb-txt">
+    <div class="idx" id="lbIdx"></div>
+    <h3 id="lbTitle"></h3>
+    <p id="lbDesc"></p>
+    <dl id="lbDl"></dl>
+    <ol class="yt" id="lbYt"></ol>
+  </div>
+</div>
+
+<script>
+/* ---------- content (edit here) ---------- */
+const WORK = [
+  {id:2,cat:'brand',w:'w8',title:'Bum Energy x Gymshark — Nashville',yr:'2026',client:'RAW / Bum Energy',role:'FILM + STILLS',fmt:'FILM + STILLS',cover:"img/cbum_01.jpg",gallery:["img/cbum_01.jpg", "img/cbum_21.jpg", "img/cbum_35.jpg", "img/cbum_04.jpg", "img/cbum_13.jpg", "img/cbum_16.jpg", "img/cbum_23.jpg", "img/cbum_28.jpg", "img/cbum_30.jpg", "img/cbum_31.jpg", "img/cbum_33.jpg", "img/cbum_36.jpg", "img/cbum_37.jpg"],
+    en:'Gymshark x Bum Energy campaign film shot in Nashville with CBUM: smoke, hard light, chains. Frames pulled from the edit.',
+    es:'Film de campaña Gymshark x Bum Energy grabado en Nashville con CBUM: humo, luz dura, cadenas. Fotogramas del edit.',
+    ja:'ナッシュビルで撮影したCBUMとのGymshark x Bum Energyキャンペーン映像。スモーク、硬い光、チェーン。編集からのフレーム。'},
+  {id:4,cat:'music',w:'',title:'Belcast — Music',yr:'2026',client:'Belcast',role:'PHOTO + VIDEO',fmt:'PHOTO + VIDEO',cover:"img/music_yuh.jpg",gallery:["video/mus_mirame.mp4","img/music_yuh.jpg", "img/music_amants.jpg", "img/music_softclub.jpg", "img/mus_04.jpg", "img/mus_01.jpg", "img/mus_09.jpg", "img/mus_10.jpg", "img/mus_12.jpg", "img/mus_13.jpg", "img/mus_15.jpg", "img/mus_17.jpg", "img/mus_18.jpg", "img/mus_19.jpg"],
+    en:'Photoshoots and music videos for Belcast\'s releases, including the video for Mírame.',
+    es:'Sesiones de fotos y videoclips para la música de Belcast, incluyendo el video de Mírame.',
+    ja:'Belcastの音楽リリースのための写真とミュージックビデオ（「Mírame」を含む）。'},
+  {id:8,cat:'athlete',w:'w8',title:'Belcast — Reels',yr:'—',client:'Belcast',role:'REELS',fmt:'REELS',videos:[{"src": "video/bel_reel1.mp4", "poster": "video/bel_reel1.jpg"}, {"src": "video/bel_reel2.mp4", "poster": "video/bel_reel2.jpg"}],video:"video/belcast_reel.mp4",
+    en:'Short-form reels for Belcast\'s channels.',
+    es:'Reels de formato corto para los canales de Belcast.',
+    ja:'Belcastのチャンネル向けショート動画。'},
+  {id:9,cat:'athlete',w:'',title:'Belcast — YouTube',yr:'—',client:'Belcast',role:'YOUTUBE',fmt:'YOUTUBE',yt:[["Construí el gym de mis sueños", "https://www.youtube.com/watch?v=4RtyMvMNlE4"], ["Me convertí en el primer mexicano en sacar una colección con Gymshark", "https://www.youtube.com/watch?v=BzGfKNsUeVU"], ["Mi evento más grande con Gymshark en Nueva York — GS x Belcast", "https://www.youtube.com/watch?v=6689AwvJ12o"], ["Llevamos un Porsche GT3 RS por la calle más famosa de Miami — con Yetus Prime y Colby", "https://www.youtube.com/watch?v=Mg20OnF0m90"], ["Tronando vena con Aldo de Nigris — ep. 13", "https://www.youtube.com/watch?v=8GvPn4kxY-c"]],
+    en:'Long-form YouTube videos with Belcast — from building his dream gym to his Gymshark collection launch in New York.',
+    es:'Videos largos de YouTube con Belcast — desde construir el gym de sus sueños hasta el lanzamiento de su colección con Gymshark en Nueva York.',
+    ja:'BelcastとのYouTube長編動画 — 夢のジム作りからニューヨークでのGymsharkコレクション発表まで。'},
+  {id:5,cat:'events',w:'',title:'Olympia 2025–2026',yr:'2025–26',client:'Olympia',role:'PHOTO + VIDEO',fmt:'PHOTO + VIDEO',yt:[["¡Ismael Martínez pasa al Mr. Olympia 2026!", "https://www.youtube.com/watch?v=LBuADavzd5Y"]],cover:"img/oly_03.jpg",gallery:["img/oly_03.jpg", "img/oly_01.jpg", "img/oly_02.jpg", "img/oly_04.jpg", "img/oly_06.jpg", "img/oly_07.jpg", "img/oly_09.jpg", "img/oly_10.jpg", "img/oly_11.jpg", "img/oly_12.jpg", "img/oly_14.jpg", "img/oly_16.jpg", "img/oly_18.jpg"],
+    en:'Olympia coverage, 2025–2026. In 2026: competitor Ismael — gym portraits and backstage frames from the film.',
+    es:'Cobertura del Olympia, 2025–2026. En 2026: el competidor Ismael — retratos en el gym y fotogramas de backstage del film.',
+    ja:'2025〜2026年オリンピアの撮影。2026年は選手Ismael — ジムでのポートレートと映像のバックステージフレーム。'},
+  {id:3,cat:'athlete',w:'',title:'Belcast — Influencer',yr:'—',client:'Belcast',role:'PHOTO',fmt:'PHOTO',cover:"img/infl_01.jpg",gallery:["img/infl_01.jpg"],
+    en:'Influencer photo sessions with Mexican fitness athlete Belcast.',
+    es:'Sesiones de foto de influencer con el atleta fitness mexicano Belcast.',
+    ja:'メキシコのフィットネスアスリートBelcastのインフルエンサー撮影。'},
+  {id:10,cat:'brand',w:'',title:'Dragon Pharma',yr:'—',client:'Dragon Pharma',role:'REELS + YOUTUBE',fmt:'REELS + YOUTUBE',tri:["video/dragon/dp_02.mp4", "video/dragon/dp_01.mp4", "video/dragon/dp_03.mp4"],videos:[{"src": "video/dragon/dp_02.mp4", "poster": "video/dragon/dp_02.jpg"}, {"src": "video/dragon/dp_01.mp4", "poster": "video/dragon/dp_01.jpg"}, {"src": "video/dragon/dp_03.mp4", "poster": "video/dragon/dp_03.jpg"}],yt:[["¡Ismael Martínez pasa al Mr. Olympia 2026!", "https://www.youtube.com/watch?v=LBuADavzd5Y"], ["La receta anabólica de Michito", "https://www.youtube.com/watch?v=2Hgy5Un4eNI"], ["Pata al fallo con Romina y Michito", "https://www.youtube.com/watch?v=DOR-uLHmqlg"], ["Glúteo al fallo — Lucía Elizondo", "https://www.youtube.com/watch?v=mPMAhqbu7AI"], ["Lucía Elizondo y Robert Quiroga", "https://www.youtube.com/watch?v=Z-2rCyEtG94"]],
+    en:'Reels and YouTube content for Dragon Pharma Mexico — athlete features, training episodes and Ismael Martínez qualifying for the Mr. Olympia 2026.',
+    es:'Reels y contenido de YouTube para Dragon Pharma México — atletas, episodios de entrenamiento e Ismael Martínez clasificando al Mr. Olympia 2026.',
+    ja:'Dragon Pharma Mexico向けのリールとYouTube — アスリート特集、トレーニング回、そしてIsmael MartínezのMr.オリンピア2026出場決定。'},
+  {id:11,cat:'mkt',w:'w12',title:'TOP GYM — Open 24/7',yr:'—',client:'TOP GYM',role:'PHOTO + REELS + MKT',fmt:'PHOTO + REELS + MKT',video:"video/topgym_loop.mp4",videos:[{"src": "video/topgym/tg_10.mp4", "poster": "video/topgym/tg_10.jpg"}, {"src": "video/topgym/tg_03.mp4", "poster": "video/topgym/tg_03.jpg"}, {"src": "video/topgym/tg_04.mp4", "poster": "video/topgym/tg_04.jpg"}, {"src": "video/topgym/tg_07.mp4", "poster": "video/topgym/tg_07.jpg"}, {"src": "video/topgym/tg_11.mp4", "poster": "video/topgym/tg_11.jpg"}, {"src": "video/topgym/tg_01.mp4", "poster": "video/topgym/tg_01.jpg"}, {"src": "video/topgym/tg_02.mp4", "poster": "video/topgym/tg_02.jpg"}, {"src": "video/topgym/tg_05.mp4", "poster": "video/topgym/tg_05.jpg"}, {"src": "video/topgym/tg_06.mp4", "poster": "video/topgym/tg_06.jpg"}, {"src": "video/topgym/tg_08.mp4", "poster": "video/topgym/tg_08.jpg"}, {"src": "video/topgym/tg_09.mp4", "poster": "video/topgym/tg_09.jpg"}],
+    en:'Marketing lead for a 24-hour gym expanding across the Rio Grande Valley — 11 reels, from facility tours to the Nov 7 doors-open launch.',
+    es:'Líder de marketing de un gimnasio 24 horas que se expande por el Valle del Río Grande — 11 reels, desde recorridos de las instalaciones hasta la apertura del 7 de noviembre.',
+    ja:'リオグランデバレーで拡大中の24時間ジムのマーケティング責任者 — 施設紹介から11月7日のオープンまで、11本のリール。'},
+  {id:6,cat:'brand',w:'',title:'Belcast Signature Collection',yr:'2024',client:'Gymshark',role:'PHOTO + VIDEO',fmt:'PHOTO + VIDEO',cover:"img/gs24_14.jpg",gallery:["img/gs24_14.jpg", "img/gs24_19.jpg", "img/gs24_05.jpg", "img/gs24_03.jpg", "img/gs24_09.jpg", "img/gs24_10.jpg", "img/gs24_12.jpg", "img/gs24_15.jpg", "img/gs24_17.jpg", "img/gs24_18.jpg", "img/gs24_20.jpg", "img/gs24_21.jpg", "img/gs24_22.jpg", "img/gs24_23.jpg", "img/gs24_24.jpg", "img/gs24_07.jpg"],
+    en:'Launch content for Belcast\'s signature collection with Gymshark — a supercar shoot and a night shoot on the streets of New York.',
+    es:'Contenido de lanzamiento de la colección firma de Belcast con Gymshark — sesión con superauto y sesión nocturna en las calles de Nueva York.',
+    ja:'BelcastのGymsharkシグネチャーコレクションのローンチコンテンツ — スーパーカー撮影とニューヨークの夜の街での撮影。'},
+  {id:14,cat:'brand',w:'',title:'Belcast x RGMNT',yr:'—',client:'RGMNT',role:'PHOTO',fmt:'PHOTO',cover:"img/rg_02.jpg",gallery:["img/rg_02.jpg", "img/rg_01.jpg", "img/rg_03.jpg", "img/rg_05.jpg", "img/rg_06.jpg", "img/rg_04.jpg", "img/rg_07.jpg", "img/rg_09.jpg", "img/rg_10.jpg", "img/rg_11.jpg", "img/rg_13.jpg", "img/rg_14.jpg", "img/rg_15.jpg", "img/rg_16.jpg", "img/rg_08.jpg", "img/rg_12.jpg"],
+    en:'Studio shoot with Belcast for RGMNT — color-gel sets in hot pink, ice blue and violet, plus a clean white-cyc look.',
+    es:'Sesión de estudio con Belcast para RGMNT — sets con geles en rosa, azul hielo y violeta, más un look limpio en ciclorama blanco.',
+    ja:'RGMNTのためのBelcastスタジオ撮影 — ホットピンク、アイスブルー、バイオレットのカラージェルと白ホリゾントのクリーンなルック。'},
+  {id:1,cat:'brand',w:'',title:'Belcast x Gymshark',yr:'2026',client:'Gymshark',role:'PHOTO + VIDEO',fmt:'PHOTO + VIDEO',cover:"img/gs26/gs26_b11.jpg",gallery:["video/gs26_reel.mp4", "video/gs26/gs26_clip2.mp4", "video/gs26/gs26_clip1.mp4", "video/gs26/gs26_clip3.mp4", "img/gs26/gs26_b11.jpg", "img/gs26/gs26_b01.jpg", "img/gs26/gs26_b02.jpg", "img/gs26/gs26_b03.jpg", "img/gs26/gs26_b05.jpg", "img/gs26/gs26_b07.jpg", "img/gs26/gs26_b08.jpg", "img/gs26/gs26_b09.jpg", "img/gs26/gs26_b13.jpg", "img/gs26/gs26_b14.jpg", "img/gs26/gs26_bts0443.jpg", "img/gs26/gs26_bts0448.jpg", "img/gs26/gs26_bts0466.jpg", "img/gs26/gs26_bts0477.jpg", "img/gs26/gs26_bts0482.jpg", "img/gs26/gs26_bts0496.jpg", "img/gs26/gs26_bts0499.jpg", "img/gs26/gs26_bts0514.jpg", "img/gs26/gs26_bts0516.jpg", "img/gs26/gs26_bts0531.jpg"],
+    en:'GS x CB — Belcast x Gymshark 2026 campaign: studio selects on a hand-drawn manga city backdrop, the reel, and behind-the-scenes from the set.',
+    es:'GS x CB — campaña Belcast x Gymshark 2026: selects de estudio sobre un fondo de ciudad estilo manga, el reel y backstage del set.',
+    ja:'GS x CB — Belcast x Gymshark 2026キャンペーン。手描きマンガの街並みバックドロップでのスタジオセレクト、リール、撮影現場の舞台裏。'},
+  {id:13,cat:'brand',w:'',title:'Gymshark — Black Friday 2024',yr:'2024',client:'Gymshark',role:'PHOTO + VIDEO',fmt:'PHOTO + VIDEO',cover:"img/bf/bf_155.jpg",gallery:["img/bf/bf_155.jpg", "img/bf/bf_009.jpg", "img/bf/bf_012.jpg", "img/bf/bf_018.jpg", "img/bf/bf_027.jpg", "img/bf/bf_029.jpg", "img/bf/bf_040.jpg", "img/bf/bf_047.jpg", "img/bf/bf_056.jpg", "img/bf/bf_059.jpg", "img/bf/bf_072.jpg", "img/bf/bf_082.jpg", "img/bf/bf_096.jpg", "img/bf/bf_104.jpg", "img/bf/bf_117.jpg", "img/bf/bf_121.jpg", "img/bf/bf_137.jpg", "img/bf/bf_147.jpg", "img/bf/bf_164.jpg", "img/bf/bf_172.jpg"],
+    en:'Gymshark BFCM 2024 for Mexico — athletes, apparel and product details across a warehouse gym, a red-carpet set and a rooftop.',
+    es:'Gymshark BFCM 2024 para México — atletas, ropa y detalles de producto en un gym industrial, un set con alfombra roja y una azotea.',
+    ja:'メキシコ向けGymshark BFCM 2024 — 倉庫型ジム、レッドカーペットのセット、屋上でのアスリート、アパレル、プロダクトディテール。'},
+  {id:15,cat:'brand',w:'w8',title:'Ray-Ban Meta x Belcast',yr:'—',client:'Meta',role:'CAMPAIGN FILM',fmt:'CAMPAIGN FILM',video:"video/meta_loop.mp4",videos:[{"src": "video/meta_camp.mp4", "poster": "video/meta_camp.jpg"}],
+    en:'Campaign film for Ray-Ban Meta with Belcast — a gym session mixing his own POV through the glasses with cinematic coverage.',
+    es:'Film de campaña para Ray-Ban Meta con Belcast — una sesión de gym que mezcla su POV desde los lentes con tomas cinematográficas.',
+    ja:'BelcastとのRay-Ban Metaキャンペーン映像 — グラス越しのPOVとシネマティックな映像を組み合わせたジムセッション。'},
+  {id:7,cat:'brand',w:'w6',title:'World Gym x Belcast',yr:'—',client:'World Gym',role:'PHOTO + DIRECTION',fmt:'PHOTO + DIRECTION',
+    en:'Belcast photoshoot at World Gym, from script and pre-production to final frames.',
+    es:'Sesión de Belcast en World Gym, del guion y la preproducción a las fotos finales.',
+    ja:'台本・プリプロダクションから撮影まで手がけた、World GymでのBelcast撮影。'},
+  {id:12,cat:'brand',w:'w6',title:'Belcast Signature Flavor',yr:'—',client:'RAW / Bum Energy',role:'PHOTO + VIDEO',fmt:'PHOTO + VIDEO',
+    en:'Content for Belcast\'s signature flavor with RAW / Bum Energy.',
+    es:'Contenido para el sabor firma de Belcast con RAW / Bum Energy.',
+    ja:'RAW / Bum EnergyのBelcastシグネチャーフレーバーのコンテンツ。'}
+];
+const SERVICES = [
+  {en:['Photography','Athletes, campaigns, events, products. Shot to feel like motion.'],es:['Fotografía','Atletas, campañas, eventos, producto. Fotos que se sienten en movimiento.'],ja:['写真撮影','アスリート、キャンペーン、イベント、商品。動きを感じる写真。']},
+  {en:['Video & Reels','Short-form for IG/TikTok, YouTube, brand films, hype edits.'],es:['Video y Reels','Formato corto para IG/TikTok, YouTube, brand films, edits de hype.'],ja:['映像・リール','IG/TikTok向けショート動画、YouTube、ブランドフィルム、ハイプ編集。']},
+  {en:['Marketing','Campaign planning, social content and growth for gyms and brands.'],es:['Marketing','Planeación de campañas, contenido social y crecimiento para gimnasios y marcas.'],ja:['マーケティング','キャンペーン設計、SNSコンテンツ、ジムやブランドの成長支援。']},
+  {en:['Events & Sports','Competitions, expos, matchday — from the Olympia stage to pitch-side.'],es:['Eventos y Deportes','Competencias, expos, partidos — del escenario del Olympia a la cancha.'],ja:['イベント・スポーツ','大会、エキスポ、試合 — オリンピアのステージからピッチサイドまで。']},
+  {en:['Creative Direction','Concept, scripts, pre-production, art direction.'],es:['Dirección Creativa','Concepto, guiones, preproducción, dirección de arte.'],ja:['クリエイティブ・ディレクション','コンセプト、台本、プリプロダクション、アートディレクション。']},
+];
+const I18N = {
+  en:{nav_work:'Work',nav_services:'Services',nav_contact:'Contact',kicker:'✱ PHOTO / VIDEO / MKT ✱',
+    tagline:'Fitness <span>✱</span> Sports <span>✱</span> Brands <span>✱</span> Motion',localtime:'Local time',move:'Move your cursor',locs:'MEXICO <b>MX</b><br>UNITED STATES <b>US</b><br>JAPAN <b>JP</b>',
+    work_title:'Selected <em>Work</em>',f_all:'All',f_brand:'Brands',f_ath:'Athlete',f_ev:'Events',f_mus:'Music',f_mkt:'Mkt',svc_title:'What I <em>Do</em>',
+    cl_title:'Worked <em>With</em>',next:'NEXT?',c1:"Let's",c2:'shoot',foot:'Built loud. Shot louder.',
+    mq:['PHOTO','VIDEO','FITNESS','SPORTS','BRANDS','MX ⇄ US ⇄ JP','BOOK NOW'],copied:'✱ COPIED TO CLIPBOARD ✱',copyfail:'✱ SELECT AND COPY THE ADDRESS ✱',
+    client:'Client',role:'Role',year:'Year',view:'VIEW'},
+  es:{nav_work:'Trabajo',nav_services:'Servicios',nav_contact:'Contacto',kicker:'✱ FOTO / VIDEO / MKT ✱',
+    tagline:'Fitness <span>✱</span> Deportes <span>✱</span> Marcas <span>✱</span> Movimiento',localtime:'Hora local',move:'Mueve el cursor',locs:'MÉXICO <b>MX</b><br>ESTADOS UNIDOS <b>US</b><br>JAPÓN <b>JP</b>',
+    work_title:'Trabajo <em>Selecto</em>',f_all:'Todo',f_brand:'Marcas',f_ath:'Atleta',f_ev:'Eventos',f_mus:'Música',f_mkt:'Mkt',svc_title:'Lo que <em>Hago</em>',
+    cl_title:'He trabajado <em>con</em>',next:'¿SIGUE?',c1:'Vamos a',c2:'grabar',foot:'Hecho fuerte. Grabado más fuerte.',
+    mq:['FOTO','VIDEO','FITNESS','DEPORTES','MARCAS','MX ⇄ US ⇄ JP','RESERVA'],copied:'✱ COPIADO ✱',copyfail:'✱ SELECCIONA Y COPIA EL CORREO ✱',
+    client:'Cliente',role:'Rol',year:'Año',view:'VER'},
+  ja:{nav_work:'作品',nav_services:'サービス',nav_contact:'連絡',kicker:'✱ 写真 / 映像 / マーケティング ✱',
+    tagline:'フィットネス <span>✱</span> スポーツ <span>✱</span> ブランド <span>✱</span> モーション',localtime:'現地時間',move:'カーソルを動かして',
+    locs:'メキシコ <b>MX</b><br>アメリカ <b>US</b><br>日本 <b>JP</b>',
+    work_title:'セレクト <em>ワーク</em>',f_all:'すべて',f_brand:'ブランド',f_ath:'アスリート',f_ev:'イベント',f_mus:'音楽',f_mkt:'マーケ',svc_title:'できる <em>こと</em>',
+    cl_title:'クライアント <em>実績</em>',next:'次は？',c1:'一緒に',c2:'撮ろう',foot:'大胆に作り、もっと大胆に撮る。',
+    mq:['写真','映像','フィットネス','スポーツ','ブランド','MX ⇄ US ⇄ JP','予約受付中'],copied:'✱ コピーしました ✱',copyfail:'✱ アドレスを選択してコピー ✱',
+    client:'クライアント',role:'担当',year:'年',view:'見る'}
+};
+const EMAIL = 'hello@yourdomain.com';
+let lang = 'en';
+try{ lang = localStorage.getItem('pk_lang') || 'en'; }catch(e){}
+
+/* ---------- generative placeholder art ---------- */
+function art(seed, big){
+  const r = mulberry(seed*9973);
+  const pal = [['#c8ff00','#070707'],['#ff2bd6','#070707'],['#4b5cff','#070707'],['#f2f2ee','#070707'],['#c8ff00','#1b1bff']][seed%5];
+  const W=400,H=500; let s='';
+  const kind = seed % 4;
+  if(kind===0){ // concentric warped rings
+    for(let i=0;i<26;i++){const rr=8+i*14;s+=`<ellipse cx="${200+Math.sin(i*.6)*30}" cy="${250+Math.cos(i*.4)*20}" rx="${rr*1.1}" ry="${rr*.8}" fill="none" stroke="${pal[0]}" stroke-width="${i%3?0.8:2}" opacity="${1-i/30}"/>`}
+  }else if(kind===1){ // wave lines
+    for(let i=0;i<40;i++){let d='M0 '+(i*13);for(let x=0;x<=W;x+=20){d+=` L${x} ${i*13+Math.sin(x/40+i*.5)*18*(1+r())}`}s+=`<path d="${d}" fill="none" stroke="${pal[0]}" stroke-width="1"/>`}
+  }else if(kind===2){ // halftone grid
+    for(let y=10;y<H;y+=18)for(let x=10;x<W;x+=18){const d=Math.hypot(x-W*r(),y-H*.5);const rad=Math.max(.5,7-d/45);s+=`<circle cx="${x}" cy="${y}" r="${rad}" fill="${pal[0]}"/>`}
+  }else{ // star burst + wire
+    for(let i=0;i<60;i++){const a=i/60*Math.PI*2;const l=120+r()*160;s+=`<line x1="200" y1="250" x2="${200+Math.cos(a)*l}" y2="${250+Math.sin(a)*l}" stroke="${pal[0]}" stroke-width="${i%5?0.6:2}"/>`}
+    s+=`<circle cx="200" cy="250" r="46" fill="${pal[1]}" stroke="${pal[0]}" stroke-width="2"/>`;
+  }
+  s+=`<text x="20" y="${H-22}" font-family="Unbounded" font-weight="900" font-size="64" fill="none" stroke="${pal[0]}" stroke-width="1.2" opacity=".55">${String(seed).padStart(2,'0')}</text>`;
+  return `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid slice"><rect width="${W}" height="${H}" fill="${pal[1]}"/>${s}</svg>`;
+}
+function mulberry(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+
+/* ---------- render ---------- */
+const grid = document.getElementById('grid');
+function media(w){
+  if(w.tri) return `<div class="tri">${w.tri.map(v=>`<video src="${v}" muted loop playsinline autoplay preload="auto"></video>`).join('')}</div>`;
+  if(w.video) return `<video src="${w.video}" muted loop playsinline autoplay preload="auto"></video>`;
+  if(w.cover) return `<img src="${w.cover}" loading="lazy" alt="${w.title}">`;
+  return art(w.id);
+}
+function renderWork(){
+  grid.innerHTML = WORK.map((w,i)=>`
+    <article class="card ${w.w} reveal" data-cat="${w.cat}" data-id="${w.id}">
+      <div class="frame">
+        <div class="art">${media(w)}</div>
+        ${(w.video||w.tri)?'':`<div class="rgb" style="filter:hue-rotate(${90+w.id*40}deg)">${w.cover?`<img src="${w.cover}" alt="">`:art(w.id)}</div>`}
+        ${(w.cover||w.video||w.tri)?'':(w.yt?`<div class="ph yt-ph">▶ ${w.yt.length} VIDEOS</div>`:'<div class="ph">[ drop your shot ]</div>')}
+        <span class="tag">${w.fmt}</span><span class="num">${String(i+1).padStart(2,'0')}</span>
+      </div>
+      <div class="meta"><h3>${w.title}</h3><span class="yr">${w.yr}</span></div>
+    </article>`).join('');
+  bindCards(); observe();
+}
+function renderSvc(){
+  document.getElementById('svc').innerHTML = SERVICES.map((s,i)=>`
+    <div class="svc-row reveal"><span class="n">0${i+1}</span><h4>${s[lang][0]}</h4><p>${s[lang][1]}</p></div>`).join('');
+  observe();
+}
+function renderMq(){
+  const items = I18N[lang].mq.map(t=>`<span>${t}</span><span style="color:#000">✱</span>`).join('');
+  document.getElementById('mq').innerHTML = items+items+items+items;
+}
+function applyLang(){
+  document.documentElement.lang = lang;
+  document.querySelectorAll('[data-i18n]').forEach(el=>{el.textContent = I18N[lang][el.dataset.i18n]});
+  document.querySelectorAll('[data-i18n-html]').forEach(el=>{el.innerHTML = I18N[lang][el.dataset.i18nHtml]});
+  document.querySelectorAll('.lang button').forEach(b=>b.classList.toggle('on',b.dataset.lang===lang));
+  document.getElementById('cursorLabel').textContent = I18N[lang].view;
+  renderSvc(); renderMq(); bindHover();
+}
+document.querySelectorAll('.lang button').forEach(b=>b.addEventListener('click',()=>{
+  lang=b.dataset.lang; try{localStorage.setItem('pk_lang',lang)}catch(e){} applyLang();
+}));
+
+/* filters */
+document.getElementById('filters').addEventListener('click',e=>{
+  const b=e.target.closest('button'); if(!b) return;
+  document.querySelectorAll('#filters button').forEach(x=>x.classList.toggle('on',x===b));
+  const f=b.dataset.f;
+  document.querySelectorAll('.card').forEach(c=>c.classList.toggle('hide',f!=='all'&&c.dataset.cat!==f));
+});
+
+/* cards: tilt + lightbox */
+function bindCards(){
+  document.querySelectorAll('.card').forEach(c=>{
+    const fr=c.querySelector('.frame');
+    c.addEventListener('mousemove',e=>{const r=fr.getBoundingClientRect();const x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;
+      fr.style.transform=`rotateY(${x*10}deg) rotateX(${-y*10}deg) scale(1.02)`});
+    c.addEventListener('mouseleave',()=>fr.style.transform='');
+    c.addEventListener('click',()=>openLb(+c.dataset.id));
+  });
+}
+const lb=document.getElementById('lb');
+function openLb(id){
+  const w=WORK.find(x=>x.id===id), t=I18N[lang];
+  const la=document.getElementById('lbArt');
+  if(w.videos){la.innerHTML=`<video id="lbVid" src="${w.videos[0].src}" poster="${w.videos[0].poster}" controls autoplay playsinline></video><div class="thumbs">${w.videos.map((v,i)=>`<img src="${v.poster}" data-src="${v.src}" class="${i?'':'on'}" alt="">`).join('')}</div>`;
+    la.querySelectorAll('.thumbs img').forEach(t=>t.onclick=()=>{const v=la.querySelector('#lbVid');v.src=t.dataset.src;v.poster=t.src;v.play().catch(()=>{});la.querySelectorAll('.thumbs img').forEach(x=>x.classList.toggle('on',x===t))});}
+  else if(w.video){la.innerHTML=`<video src="${w.video}" controls autoplay muted loop playsinline></video>`}
+  else if(w.gallery){
+    const isV=g=>/\.mp4$/.test(g), post=g=>isV(g)?g.replace(/\.mp4$/,'.jpg'):g;
+    const main=g=>isV(g)?`<video id="lbMain" src="${g}" poster="${post(g)}" controls autoplay playsinline></video>`:`<img id="lbMain" src="${g}" alt="">`;
+    la.innerHTML=main(w.gallery[0])+`<div class="thumbs">${w.gallery.map((g,i)=>`<span class="th ${isV(g)?'vid':''}"><img src="${post(g)}" data-g="${g}" class="${i?'':'on'}" alt=""></span>`).join('')}</div>`;
+    la.querySelectorAll('.thumbs img').forEach(t=>t.onclick=()=>{const m=la.querySelector('#lbMain');m.pause&&m.pause();m.outerHTML=main(t.dataset.g);la.querySelectorAll('.thumbs img').forEach(x=>x.classList.toggle('on',x===t))});}
+  else la.innerHTML=art(id);
+  document.getElementById('lbIdx').textContent=`(${String(WORK.indexOf(w)+1).padStart(2,'0')}) — ${w.client.toUpperCase()}`;
+  document.getElementById('lbTitle').textContent=w.title;
+  document.getElementById('lbDesc').textContent=w[lang];
+  document.getElementById('lbDl').innerHTML=`<dt>${t.client}</dt><dd>${w.client}</dd><dt>${t.role}</dt><dd>${w.role}</dd><dt>${t.year}</dt><dd>${w.yr}</dd>`;
+  document.getElementById('lbYt').innerHTML = w.yt ? w.yt.map((v,i)=>`<li><a href="${v[1]}" target="_blank" rel="noopener"><span>${String(i+1).padStart(2,'0')}</span>${v[0]}<b>↗</b></a></li>`).join('') : '';
+  lb.classList.add('on'); document.body.style.overflow='hidden';
+}
+function closeLb(){lb.querySelectorAll('video').forEach(v=>v.pause());lb.classList.remove('on');document.body.style.overflow=''}
+document.getElementById('lbClose').addEventListener('click',closeLb);
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeLb()});
+
+/* email copy */
+document.getElementById('mail').addEventListener('click',async()=>{
+  const out=document.getElementById('copied');
+  try{await navigator.clipboard.writeText(EMAIL);out.textContent=I18N[lang].copied}catch(e){out.textContent=I18N[lang].copyfail}
+  setTimeout(()=>out.textContent='',2400);
+});
+
+/* cursor */
+const cur=document.getElementById('cursor'), lab=document.getElementById('cursorLabel');
+let mx=innerWidth/2,my=innerHeight/2,cx=mx,cy=my;
+addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY});
+function bindHover(){
+  document.querySelectorAll('.card').forEach(el=>{
+    el.onmouseenter=()=>{cur.classList.add('big');lab.classList.add('on')};
+    el.onmouseleave=()=>{cur.classList.remove('big');lab.classList.remove('on')};
+  });
+}
+(function loop(){cx+=(mx-cx)*.2;cy+=(my-cy)*.2;cur.style.transform=`translate(${cx}px,${cy}px)`;lab.style.left=cx+'px';lab.style.top=cy+'px';requestAnimationFrame(loop)})();
+
+/* wordmark warp reacts to cursor */
+const turb=document.getElementById('turb'), disp=document.getElementById('disp');
+let tt=0;
+(function warp(){tt+=.004;const d=Math.hypot(mx-innerWidth/2,my-innerHeight/2)/Math.hypot(innerWidth/2,innerHeight/2);
+  turb.setAttribute('baseFrequency',`${0.006+Math.sin(tt)*0.003} ${0.018+Math.cos(tt*1.3)*0.008}`);
+  disp.setAttribute('scale', (8 + (1-d)*38).toFixed(1));
+  requestAnimationFrame(warp)})();
+
+/* hero field: warped wireframe terrain */
+const cv=document.getElementById('field'), ctx=cv.getContext('2d');
+let W,H,dpr;
+function size(){dpr=Math.min(devicePixelRatio||1,2);W=cv.clientWidth;H=cv.clientHeight;cv.width=W*dpr;cv.height=H*dpr;ctx.setTransform(dpr,0,0,dpr,0,0)}
+size(); addEventListener('resize',size);
+let ft=0; const reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
+function field(){
+  ft += reduce?0:.012;
+  ctx.fillStyle='#070707';ctx.fillRect(0,0,W,H);
+  const rows=34, cols=44, hor=H*.42;
+  const mxN=(mx/W-.5), myN=(my/H);
+  const pts=[];
+  for(let j=0;j<rows;j++){
+    const z=j/(rows-1); const zz=Math.pow(z,1.9);
+    const y0=hor+zz*(H-hor+120);
+    const row=[];
+    for(let i=0;i<cols;i++){
+      const u=i/(cols-1)-.5;
+      const spread=.25+zz*2.4;
+      let x=W/2+u*W*spread;
+      const dx=x-mx, dy=y0-my; const dm=Math.hypot(dx,dy);
+      const bump=Math.exp(-dm*dm/(2*170*170))*90;
+      const wave=Math.sin(u*9+ft*2+z*6)*14*zz+Math.cos(z*10-ft*3)*10*zz;
+      row.push([x+mxN*60*zz, y0-wave-bump*zz]);
+    }
+    pts.push(row);
+  }
+  ctx.lineWidth=1;
+  for(let j=0;j<rows;j++){
+    const a=.12+.75*(j/rows);
+    ctx.strokeStyle=`rgba(200,255,0,${a})`;
+    ctx.beginPath();pts[j].forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));ctx.stroke();
+  }
+  for(let i=0;i<cols;i++){
+    ctx.strokeStyle='rgba(200,255,0,.28)';
+    ctx.beginPath();for(let j=0;j<rows;j++){const p=pts[j][i];j?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1])}ctx.stroke();
+  }
+  // sun / horizon disc
+  const g=ctx.createRadialGradient(W/2,hor,0,W/2,hor,W*.35);
+  g.addColorStop(0,'rgba(255,43,214,.22)');g.addColorStop(1,'rgba(255,43,214,0)');
+  ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+  // scan line
+  const sy=(ft*120)%H; ctx.fillStyle='rgba(242,242,238,.05)';ctx.fillRect(0,sy,W,2);
+  if(!reduce) requestAnimationFrame(field);
+}
+field();
+
+/* clock */
+function tick(){document.getElementById('clock').textContent=new Date().toLocaleTimeString('en-GB',{timeZone:'America/Chicago'})}
+tick(); setInterval(tick,1000);
+
+/* reveal on scroll */
+let io;
+function observe(){
+  if(!('IntersectionObserver' in window)){document.querySelectorAll('.reveal').forEach(e=>e.classList.add('in'));return}
+  io = io || new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.12});
+  document.querySelectorAll('.reveal:not(.in)').forEach(e=>io.observe(e));
+}
+
+renderWork(); applyLang(); observe();
+</script>
+</body>
+</html>
