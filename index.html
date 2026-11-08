@@ -14,7 +14,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;600;900&family=Space+Mono:wght@400;700&family=Dela+Gothic+One&family=DotGothic16&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800;900&family=Unbounded:wght@300;600;900&family=Space+Mono:wght@400;700&family=Dela+Gothic+One&family=DotGothic16&display=swap" rel="stylesheet">
 <style>
   :root{
     --bg:#070707; --ink:#f2f2ee; --acid:#c8ff00; --pink:#ff2bd6; --blue:#4b5cff;
@@ -188,6 +188,97 @@
     *,*::before,*::after{animation:none!important;transition:none!important}
     .reveal{opacity:1;transform:none}
   }
+
+  /* ===== GRAPHIC REALISM LAYER ===== */
+  :root{--paper:#E6E5DD;--paper2:#D9D8CF;--blk:#0B0B0B;--sig:#8B3DFF;--cond:'Barlow Condensed','Dela Gothic One',sans-serif}
+  body{background:var(--blk)}
+  .hero::after{display:none}
+  /* HUD frame on hero */
+  .hud{position:absolute;inset:0;pointer-events:none;z-index:3}
+  .reg{position:absolute;width:22px;height:22px;color:var(--paper)}
+  .reg::before,.reg::after{content:"";position:absolute;background:currentColor}
+  .reg::before{left:50%;top:0;width:1px;height:100%}.reg::after{top:50%;left:0;height:1px;width:100%}
+  .reg i{position:absolute;inset:5px;border:1px solid currentColor;border-radius:50%}
+  .reg.tl{left:22px;top:78px}.reg.tr{right:22px;top:78px}.reg.bl{left:22px;bottom:96px}.reg.br{right:22px;bottom:96px}
+  .ruler{position:absolute;left:0;top:120px;bottom:140px;width:14px;background:repeating-linear-gradient(to bottom,var(--paper) 0 1px,transparent 1px 10px);opacity:.5}
+  .ruler.r{left:auto;right:0}
+  .ruler::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(to bottom,var(--paper) 0 1px,transparent 1px 50px);width:22px}
+  .unit{position:absolute;left:52px;top:84px;font-size:10px;letter-spacing:.18em;line-height:1.7;color:var(--paper);opacity:.85}
+  .unit b{display:inline-block;background:var(--acid);color:#000;padding:1px 6px;margin-right:6px;font-weight:700}
+  .callout{position:absolute;font-size:10px;letter-spacing:.16em;color:var(--paper);white-space:nowrap;display:flex;align-items:center;gap:8px}
+  .callout .k{background:var(--paper);color:#000;padding:2px 5px;font-weight:700}
+  .callout::before{content:"";height:1px;background:var(--paper);opacity:.7;width:var(--ln,90px);order:var(--o,0)}
+  .co1{left:13%;top:36%}.co2{right:10%;top:61%;--o:2}.co3{left:16%;top:66%}
+  .bar-hero{display:flex;justify-content:center;margin-top:16px;opacity:.9}
+  .bar-hero svg{height:30px;width:auto}
+  .kicker{color:var(--blk);background:var(--acid);display:inline-block;padding:4px 10px;letter-spacing:.3em;font-weight:700}
+  .tagline span{color:var(--sig)}
+  .sticker .star{color:var(--sig)}
+  /* hazard edges on the green band */
+  .marquee{position:relative;border:0}
+  .marquee::before,.marquee::after{content:"";position:absolute;left:0;right:0;height:7px;background:repeating-linear-gradient(-45deg,#000 0 10px,var(--acid) 10px 20px)}
+  .marquee::before{top:0}.marquee::after{bottom:0}
+  .marquee .track{padding:20px 0;font-family:var(--cond);font-weight:900;letter-spacing:.02em;font-size:clamp(28px,4.4vw,58px)}
+  /* section heads: stamped blocks */
+  .sec-head{border-bottom:2px solid currentColor;align-items:flex-end}
+  .sec-head .idx{display:inline-block;background:var(--acid);color:#000;font-weight:700;font-size:13px;letter-spacing:.12em;padding:4px 10px;margin-bottom:12px;clip-path:polygon(0 0,100% 0,100% 60%,85% 100%,0 100%)}
+  .sec-head h2{font-family:var(--cond);font-weight:900;letter-spacing:-.01em;font-size:clamp(56px,10vw,150px);line-height:.82}
+  .sec-head h2 em{-webkit-text-stroke:0;color:var(--sig)}
+  .jp{display:block;font-size:11px;letter-spacing:.22em;margin-top:12px;opacity:.75}
+  /* work on paper */
+  #work{background:var(--paper);color:var(--blk);position:relative}
+  #work::before{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(var(--paper2) 1px,transparent 1px) 0 0/100% 48px,linear-gradient(90deg,var(--paper2) 1px,transparent 1px) 0 0/48px 100%;opacity:.7}
+  #work>*{position:relative}
+  .filters button{border-radius:0;border:1.5px solid var(--blk);color:var(--blk);font-weight:700;padding:9px 14px 9px 26px;position:relative;background:var(--paper)}
+  .filters button::before{content:"";position:absolute;left:10px;top:50%;width:7px;height:7px;margin-top:-3.5px;background:#9a9a92;border-radius:50%}
+  .filters button:hover{color:var(--blk);border-color:var(--blk);background:#fff}
+  .filters button.on{background:var(--blk);color:var(--acid);border-color:var(--blk)}
+  .filters button.on::before{background:var(--acid);box-shadow:0 0 8px var(--acid)}
+  .card .frame{border:1.5px solid var(--blk);clip-path:polygon(0 0,calc(100% - 22px) 0,100% 22px,100% 100%,0 100%);background:#111}
+  .card::before,.card::after{content:"";position:absolute;width:14px;height:14px;z-index:3;pointer-events:none;border-color:var(--blk);border-style:solid}
+  .card::before{left:-7px;top:-7px;border-width:1.5px 0 0 1.5px}
+  .card::after{left:-7px;bottom:38px;border-width:0 0 1.5px 1.5px}
+  .card .tag{top:0;left:0;border:0;background:var(--blk);color:var(--acid);font-weight:700;padding:6px 10px}
+  .card .num{top:auto;bottom:0;right:0;background:var(--acid);color:#000;text-shadow:none;font-family:var(--cond);font-size:22px;font-weight:900;padding:2px 10px;line-height:1.1}
+  .card .code{position:absolute;left:0;bottom:0;z-index:2;background:rgba(11,11,11,.82);color:var(--paper);font-size:9.5px;letter-spacing:.16em;padding:5px 9px}
+  .card .meta{border-top:0;padding-top:10px}
+  .card h3{font-family:var(--cond);font-weight:800;font-size:clamp(22px,2.2vw,30px);letter-spacing:.01em;color:var(--blk)}
+  .card .yr{color:var(--blk);opacity:.6}
+  .card:hover .frame{box-shadow:6px 6px 0 var(--acid)}
+  /* services: black slab with hazard top */
+  #services{position:relative;border-top:10px solid transparent;border-image:repeating-linear-gradient(-45deg,#000 0 12px,var(--acid) 12px 24px) 10}
+  .svc-row h4{font-family:var(--cond);font-weight:900;letter-spacing:0;font-size:clamp(36px,6vw,84px)}
+  .svc-row .n{background:var(--paper);color:#000;padding:2px 8px;justify-self:start;font-weight:700}
+  .svc-row::before{background:var(--sig)}
+  .svc-row:hover>*{color:#fff}.svc-row:hover .n{background:#000;color:var(--acid)}
+  /* clients on paper */
+  #clients{background:var(--paper);color:var(--blk);padding-top:clamp(70px,10vw,140px)!important}
+  .clients{border:1.5px solid var(--blk)}
+  .client{border:1px solid var(--blk);font-family:var(--cond);font-weight:900;font-size:clamp(22px,2.6vw,34px)}
+  .client small{color:#555}
+  .client:hover{background:var(--blk);color:var(--acid)}
+  /* contact: ID card */
+  .idcard{margin:46px auto 0;max-width:620px;background:var(--paper);color:var(--blk);text-align:left;display:grid;grid-template-columns:1fr auto;clip-path:polygon(0 0,calc(100% - 28px) 0,100% 28px,100% 100%,0 100%);position:relative}
+  .idcard .top{grid-column:1/-1;background:var(--blk);color:var(--acid);font-size:10px;letter-spacing:.2em;padding:8px 14px;display:flex;justify-content:space-between}
+  .idcard dl{display:grid;grid-template-columns:auto 1fr;gap:6px 16px;padding:18px 18px 10px;font-size:12px;letter-spacing:.1em}
+  .idcard dt{opacity:.55}.idcard dd{font-weight:700}
+  .idcard .stamp{align-self:center;margin:14px 18px;width:92px;height:92px;border:2px solid var(--sig);color:var(--sig);display:grid;place-items:center;text-align:center;font-family:var(--cond);font-weight:900;font-size:18px;line-height:.95;transform:rotate(-8deg)}
+  .idcard .act{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 18px 16px;border-top:1.5px dashed #999}
+  .idcard .act svg{height:34px;width:auto}
+  .idcard .mail{margin:0;border-color:var(--blk);color:var(--blk);border-radius:0;background:var(--acid);font-weight:700}
+  .idcard .mail:hover{background:var(--blk);color:var(--acid)}
+  .contact .big{font-family:var(--cond);font-weight:900;letter-spacing:-.01em;font-size:clamp(80px,17vw,260px);line-height:.8}
+  .contact .big .o{-webkit-text-stroke:0;color:var(--acid)}
+  footer{align-items:center}
+  footer svg{height:18px;width:auto;opacity:.8}
+  /* cursor readout */
+  .coords{position:fixed;left:0;top:0;z-index:101;pointer-events:none;font-size:9px;letter-spacing:.14em;color:var(--acid);background:rgba(0,0,0,.6);padding:2px 5px;will-change:transform;white-space:nowrap}
+  @media (hover:none){.coords{display:none}}
+  /* lightbox scan wipe */
+  .lb.on::before{content:"";position:fixed;left:0;right:0;height:3px;background:var(--sig);box-shadow:0 0 18px var(--sig);z-index:2;animation:scan .45s cubic-bezier(.2,.8,.2,1) forwards;pointer-events:none}
+  @keyframes scan{from{top:0;opacity:1}to{top:100%;opacity:0}}
+  .lb .lb-txt h3{font-family:var(--cond);font-weight:900;letter-spacing:0;font-size:clamp(40px,5vw,76px)}
+  @media (max-width:760px){.callout,.unit,.ruler{display:none}.reg.tl,.reg.tr{top:64px}}
 </style>
 </head>
 <body>
@@ -197,6 +288,7 @@
 
 <div class="cursor" id="cursor"></div>
 <div class="cursor-label" id="cursorLabel">VIEW</div>
+<div class="coords" id="coords">X 0000 Y 0000</div>
 
 <nav>
   <div class="logo">PARKER®</div>
@@ -213,6 +305,7 @@
   <div class="hero-inner">
     <div class="kicker" data-i18n="kicker">✱ PHOTO / VIDEO / MKT ✱</div>
     <h1 class="wordmark" id="wordmark"><span class="sr">PARKER</span><canvas id="wm" aria-hidden="true"></canvas></h1>
+    <div class="bar-hero" id="barHero"></div>
     <div class="tagline" data-i18n-html="tagline">Fitness <span>✱</span> Sports <span>✱</span> Brands <span>✱</span> Motion</div>
   </div>
   <div class="sticker">
@@ -223,13 +316,21 @@
   <div class="corner c-bl" data-i18n-html="locs">MEXICO <b>MX</b><br>UNITED STATES <b>US</b><br>JAPAN <b>JP</b></div>
   <div class="corner c-br"><span data-i18n="localtime">Local time</span> <b id="clock">--:--:--</b><br><span data-i18n="move">Move your cursor</span> <b>↯</b></div>
   <div class="scroll-cue">SCROLL ↓</div>
+  <div class="hud" aria-hidden="true">
+    <span class="reg tl"><i></i></span><span class="reg tr"><i></i></span><span class="reg bl"><i></i></span><span class="reg br"><i></i></span>
+    <span class="ruler"></span><span class="ruler r"></span>
+    <div class="unit"><b>PGX-01</b>FIELD UNIT // REV 2026.11<br>LAT 25.67N — 26.30N &nbsp; LON 98.16W — 100.31W</div>
+    <div class="callout co1"><span class="k">A</span>SUBJECT // PARKER</div>
+    <div class="callout co2"><span class="k">B</span>OUTPUT // STILL · MOTION · CAMPAIGN</div>
+    <div class="callout co3"><span class="k">C</span>BASE // MX — US — JP</div>
+  </div>
 </header>
 
 <div class="marquee"><div class="track" id="mq"></div></div>
 
 <section id="work">
   <div class="sec-head reveal">
-    <div><div class="idx">(01)</div><h2 data-i18n-html="work_title">Selected <em>Work</em></h2></div>
+    <div><div class="idx">(01)</div><h2 data-i18n-html="work_title">Selected <em>Work</em></h2><span class="jp">作品集 // ARCHIVE 2024—2026 // 13 ENTRIES</span></div>
     <div class="filters" id="filters">
       <button class="on" data-f="all" data-i18n="f_all">All</button>
       <button data-f="brand" data-i18n="f_brand">Brands</button>
@@ -243,12 +344,12 @@
 </section>
 
 <section id="services">
-  <div class="sec-head reveal"><div><div class="idx">(02)</div><h2 data-i18n-html="svc_title">What I <em>Do</em></h2></div></div>
+  <div class="sec-head reveal"><div><div class="idx">(02)</div><h2 data-i18n-html="svc_title">What I <em>Do</em></h2><span class="jp">業務内容 // CAPABILITIES // 5 MODULES</span></div></div>
   <div class="svc" id="svc"></div>
 </section>
 
 <section id="clients" style="padding-top:0">
-  <div class="sec-head reveal"><div><div class="idx">(03)</div><h2 data-i18n-html="cl_title">Worked <em>With</em></h2></div></div>
+  <div class="sec-head reveal"><div><div class="idx">(03)</div><h2 data-i18n-html="cl_title">Worked <em>With</em></h2><span class="jp">取引先 // CLIENT REGISTRY</span></div></div>
   <div class="clients reveal">
     <div class="client">Gymshark<small>APPAREL</small></div>
     <div class="client">RAW<small>NUTRITION</small></div>
@@ -266,11 +367,16 @@
 <section class="contact" id="contact">
   <div class="idx reveal">(04)</div>
   <div class="big reveal"><span data-i18n="c1">Let's</span><br><span class="o" data-i18n="c2">shoot</span></div>
-  <a class="mail reveal" href="https://instagram.com/parker_gx" target="_blank" rel="noopener">@parker_gx <span>↗</span></a>
+  <div class="idcard reveal">
+    <div class="top"><span>ID // PGX-01</span><span>ACCESS: OPEN</span></div>
+    <dl><dt>NAME</dt><dd>PARKER</dd><dt>ROLE</dt><dd>PHOTO / VIDEO / MKT</dd><dt>BASE</dt><dd>MX — US — JP</dd><dt>LANG</dt><dd>EN · ES · JP</dd><dt>STATUS</dt><dd>BOOKING 2026—27</dd></dl>
+    <div class="stamp">OPEN<br>FOR<br>WORK</div>
+    <div class="act"><span id="barId"></span><a class="mail" href="https://instagram.com/parker_gx" target="_blank" rel="noopener">@parker_gx <span>↗</span></a></div>
+  </div>
   <span class="copied" data-i18n="dm">✱ DM ON INSTAGRAM FOR BOOKINGS ✱</span>
 </section>
 
-<footer><span>© 2026 PARKER — <a href="https://parkergx.com" style="text-decoration:none">PARKERGX.COM</a></span><span>MX ⇄ US ⇄ JP</span><span data-i18n="foot">Built loud. Shot louder.</span></footer>
+<footer><span>© 2026 PARKER — <a href="https://parkergx.com" style="text-decoration:none">PARKERGX.COM</a></span><span id="barFoot"></span><span>S/N PGX-2026-11 // MX ⇄ US ⇄ JP</span><span data-i18n="foot">Built loud. Shot louder.</span></footer>
 
 <div class="lb" id="lb">
   <button class="close" id="lbClose">CLOSE ✕</button>
@@ -417,7 +523,7 @@ function renderWork(){
         <div class="art">${media(w)}</div>
         ${(w.video||w.tri)?'':`<div class="rgb" style="filter:hue-rotate(${90+w.id*40}deg)">${w.cover?`<img src="${CV(w.cover)}" loading="lazy" decoding="async" alt="">`:art(w.id)}</div>`}
         ${(w.cover||w.video||w.tri)?'':(w.yt?`<div class="ph yt-ph">▶ ${w.yt.length} VIDEOS</div>`:'<div class="ph">[ drop your shot ]</div>')}
-        <span class="tag">${w.fmt}</span><span class="num">${String(i+1).padStart(2,'0')}</span>
+        <span class="tag">${w.fmt}</span><span class="code">PRJ-${String(w.id).padStart(2,'0')} // ${w.client.toUpperCase()} // ${w.yr}</span><span class="num">${String(i+1).padStart(2,'0')}</span>
       </div>
       <div class="meta"><h3>${w.title}</h3><span class="yr">${w.yr}</span></div>
     </article>`).join('');
@@ -544,7 +650,7 @@ let W,H,dpr,grad,hor;
 let Q=Math.min(devicePixelRatio||1,1); // render scale; lowered automatically on slow devices
 function size(){W=cv.clientWidth;H=cv.clientHeight;cv.width=Math.round(W*Q);cv.height=Math.round(H*Q);ctx.setTransform(Q,0,0,Q,0,0);hor=H*.42;}
 size(); addEventListener('resize',()=>{size();kick()},{passive:true});
-const ROWS=28, COLS=36, rowStyle=[...Array(ROWS)].map((_,j)=>`rgba(200,255,0,${(.12+.75*(j/ROWS)).toFixed(3)})`);
+const ROWS=28, COLS=36, rowStyle=[...Array(ROWS)].map((_,j)=>j%7===0?`rgba(200,255,0,${(.35+.6*(j/ROWS)).toFixed(3)})`:`rgba(230,229,221,${(.06+.42*(j/ROWS)).toFixed(3)})`);
 const px=new Float32Array(ROWS*COLS), py=new Float32Array(ROWS*COLS);
 let ft=0;
 function drawField(){
@@ -561,10 +667,10 @@ function drawField(){
   }
   ctx.lineWidth=1;
   for(let j=0;j<ROWS;j++){ctx.strokeStyle=rowStyle[j];ctx.beginPath();const b=j*COLS;ctx.moveTo(px[b],py[b]);for(let i=1;i<COLS;i++)ctx.lineTo(px[b+i],py[b+i]);ctx.stroke();}
-  ctx.strokeStyle='rgba(200,255,0,.28)';ctx.beginPath();
+  ctx.strokeStyle='rgba(230,229,221,.16)';ctx.beginPath();
   for(let i=0;i<COLS;i++){ctx.moveTo(px[i],py[i]);for(let j=1;j<ROWS;j++)ctx.lineTo(px[j*COLS+i],py[j*COLS+i]);}
   ctx.stroke();
-  const sy=(ft*120)%H; ctx.fillStyle='rgba(242,242,238,.05)';ctx.fillRect(0,sy,W,2);
+  const sy=(ft*120)%H; ctx.fillStyle='rgba(139,61,255,.45)';ctx.fillRect(0,sy,W,1);
 }
 
 /* one loop for everything; sleeps when nothing is visible */
@@ -622,6 +728,12 @@ function observe(){
   document.querySelectorAll('.reveal:not(.in)').forEach(e=>io.observe(e));
 }
 
+function barcode(str,h,col){let x=0,b='';for(const ch of str){const c=ch.charCodeAt(0);for(let k=0;k<4;k++){const w=1+((c>>k)&1)+((c>>(k+3))&1);if(k%2===0)b+=`<rect x="${x}" y="0" width="${w}" height="${h}"/>`;x+=w+1}}return `<svg viewBox="0 0 ${x} ${h}" fill="${col}" xmlns="http://www.w3.org/2000/svg">${b}</svg>`}
+document.getElementById('barHero').innerHTML=barcode('PARKERGX-PGX01-2026',30,'#E6E5DD');
+document.getElementById('barId').innerHTML=barcode('PARKER_GX-IG',34,'#0B0B0B');
+document.getElementById('barFoot').innerHTML=barcode('PGX-2026-11',18,'#7a7a74');
+const coordsEl=document.getElementById('coords');
+addEventListener('mousemove',e=>{coordsEl.textContent=`X ${String(e.clientX).padStart(4,'0')}  Y ${String(e.clientY).padStart(4,'0')}`;coordsEl.style.transform=`translate3d(${e.clientX+22}px,${e.clientY+18}px,0)`},{passive:true});
 renderWork(); applyLang(); observe();
 </script>
 </body>
