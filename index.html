@@ -28,9 +28,6 @@
   a{color:inherit}
   ::selection{background:var(--acid);color:#000}
 
-  /* grain */
-  .grain{position:fixed;inset:0;pointer-events:none;z-index:90;opacity:.07;background-repeat:repeat}
-  @keyframes grain{0%{transform:translate3d(0,0,0)}33%{transform:translate3d(-40px,25px,0)}66%{transform:translate3d(30px,-35px,0)}100%{transform:translate3d(-15px,40px,0)}}
 
   /* cursor */
   .cursor{will-change:transform;position:fixed;left:0;top:0;width:34px;height:34px;margin:-17px 0 0 -17px;border:1.5px solid var(--acid);border-radius:50%;
@@ -198,7 +195,6 @@
 <svg width="0" height="0" style="position:absolute">
 </svg>
 
-<div class="grain" id="grain"></div>
 <div class="cursor" id="cursor"></div>
 <div class="cursor-label" id="cursorLabel">VIEW</div>
 
@@ -506,10 +502,6 @@ function bindHover(){
 const finePointer=matchMedia('(hover:hover)').matches;
 const reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
 
-/* grain tile (generated once) */
-(function(){const c=document.createElement('canvas');c.width=c.height=160;const x=c.getContext('2d'),d=x.createImageData(160,160);
-  for(let i=0;i<d.data.length;i+=4){const v=Math.random()*255|0;d.data[i]=d.data[i+1]=d.data[i+2]=v;d.data[i+3]=255}
-  x.putImageData(d,0,0);document.getElementById('grain').style.backgroundImage=`url(${c.toDataURL()})`;})();
 
 /* hero visibility */
 const hero=document.querySelector('.hero'); let heroOn=true;
