@@ -29,12 +29,12 @@
   ::selection{background:var(--acid);color:#000}
 
   /* grain */
-  .grain{position:fixed;inset:-120px;pointer-events:none;z-index:90;opacity:.08;background-repeat:repeat;will-change:transform;animation:grain .6s steps(3) infinite;transform:translate3d(0,0,0)}
+  .grain{position:fixed;inset:0;pointer-events:none;z-index:90;opacity:.07;background-repeat:repeat}
   @keyframes grain{0%{transform:translate3d(0,0,0)}33%{transform:translate3d(-40px,25px,0)}66%{transform:translate3d(30px,-35px,0)}100%{transform:translate3d(-15px,40px,0)}}
 
   /* cursor */
   .cursor{will-change:transform;position:fixed;left:0;top:0;width:34px;height:34px;margin:-17px 0 0 -17px;border:1.5px solid var(--acid);border-radius:50%;
-    pointer-events:none;z-index:100;mix-blend-mode:difference;transition:width .25s,height .25s,margin .25s,background .25s}
+    pointer-events:none;z-index:100;transition:width .25s,height .25s,margin .25s,background .25s}
   .cursor::before,.cursor::after{content:"";position:absolute;background:var(--acid);left:50%;top:50%}
   .cursor::before{width:44px;height:1px;transform:translate(-50%,-50%)}
   .cursor::after{width:1px;height:44px;transform:translate(-50%,-50%)}
@@ -45,7 +45,7 @@
 
   /* nav */
   nav{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;justify-content:space-between;align-items:center;
-    padding:18px clamp(16px,3vw,36px);font-size:12px;letter-spacing:.12em;text-transform:uppercase;mix-blend-mode:difference}
+    padding:18px clamp(16px,3vw,36px);font-size:12px;letter-spacing:.12em;text-transform:uppercase;background:linear-gradient(#070707e6,#07070700);text-shadow:0 1px 8px #000}
   nav .logo{font-family:var(--disp);font-weight:900;font-size:15px;letter-spacing:.02em}
   nav .links{display:flex;gap:22px;align-items:center}
   nav .links a{text-decoration:none;position:relative}
@@ -57,6 +57,7 @@
   /* hero */
   .hero{position:relative;height:100vh;min-height:620px;overflow:hidden;display:grid;place-items:center}
   #field{position:absolute;inset:0;width:100%;height:100%}
+  .hero::after{content:'';position:absolute;inset:0;pointer-events:none;z-index:1;background:radial-gradient(35vw 35vw at 50% 42%,rgba(255,43,214,.22),rgba(255,43,214,0))}
   .hero-inner{position:relative;z-index:2;text-align:center;pointer-events:none}
   .kicker{font-size:12px;letter-spacing:.35em;color:var(--acid);margin-bottom:18px}
   .wordmark{font-family:var(--disp);font-weight:900;font-size:clamp(64px,17vw,260px);line-height:.82;letter-spacing:-.04em;
@@ -71,7 +72,7 @@
   .c-bl{left:clamp(16px,3vw,36px);bottom:28px}
   .c-br{right:clamp(16px,3vw,36px);bottom:28px;text-align:right}
   .sticker{position:absolute;z-index:3;right:clamp(16px,7vw,110px);top:22vh;width:150px;height:150px;pointer-events:none}
-  .sticker svg{width:100%;height:100%;animation:spin 14s linear infinite}
+  .sticker svg{width:100%;height:100%;animation:spin 14s linear infinite;will-change:transform}
   .sticker .star{position:absolute;inset:0;display:grid;place-items:center;font-size:44px;color:var(--acid)}
   @keyframes spin{to{transform:rotate(360deg)}}
   .scroll-cue{position:absolute;z-index:3;left:50%;bottom:26px;transform:translateX(-50%);font-size:11px;letter-spacing:.3em;animation:bob 1.6s ease-in-out infinite}
@@ -130,7 +131,7 @@
   .card:hover .rgb{opacity:1;animation:glitch .5s steps(2) infinite}
   @keyframes glitch{0%{transform:translate(4px,-2px);clip-path:inset(10% 0 60% 0)}50%{transform:translate(-5px,3px);clip-path:inset(55% 0 12% 0)}100%{transform:translate(2px,1px);clip-path:inset(30% 0 40% 0)}}
   .card .tag{position:absolute;top:12px;left:12px;background:#000;color:var(--acid);font-size:10px;letter-spacing:.2em;padding:5px 8px;border:1px solid var(--acid)}
-  .card .num{position:absolute;top:12px;right:12px;font-family:var(--disp);font-weight:900;font-size:13px;mix-blend-mode:difference}
+  .card .num{position:absolute;top:12px;right:12px;font-family:var(--disp);font-weight:900;font-size:13px;color:#fff;text-shadow:0 1px 6px #000}
   .card .meta{display:flex;justify-content:space-between;align-items:baseline;padding-top:12px;gap:12px}
   .card h3{font-family:var(--disp);font-weight:600;font-size:clamp(16px,1.6vw,22px);text-transform:uppercase;letter-spacing:-.01em}
   .card .yr{font-size:11px;color:var(--dim);letter-spacing:.15em}
@@ -520,7 +521,7 @@ document.addEventListener('visibilitychange',()=>{if(!document.hidden)kick()});
 const wmC=document.getElementById('wm'), wmX=wmC.getContext('2d');
 let wmSrc=null, wmAmp=6, wmT=0, lastWarp=0;
 function buildWordmark(){
-  const fs=Math.round(Math.min(Math.max(64,innerWidth*.17),260)*Math.min(devicePixelRatio||1,2));
+  const fs=Math.round(Math.min(Math.max(64,innerWidth*.17),260)*Math.min(devicePixelRatio||1,1.5));
   const o=document.createElement('canvas'), ox=o.getContext('2d');
   ox.font=`900 ${fs}px Unbounded, 'Dela Gothic One', sans-serif`;
   const pad=Math.round(fs*.18), w=Math.ceil(ox.measureText('PARKER').width - fs*.04*5)+pad*2, h=Math.round(fs*1.05)+pad;
@@ -535,7 +536,7 @@ function buildWordmark(){
 }
 function drawWordmark(){
   if(!wmSrc) return;
-  const w=wmSrc.width,h=wmSrc.height,off=(wmC.width-w)/2, step=3;
+  const w=wmSrc.width,h=wmSrc.height,off=(wmC.width-w)/2, step=4;
   wmX.clearRect(0,0,wmC.width,h);
   for(let y=0;y<h;y+=step){
     const dx=wmAmp*(Math.sin(y*.035+wmT)+.55*Math.sin(y*.09-wmT*1.7));
@@ -548,8 +549,8 @@ let wmResize; addEventListener('resize',()=>{clearTimeout(wmResize);wmResize=set
 /* hero field */
 const cv=document.getElementById('field'), ctx=cv.getContext('2d',{alpha:false});
 let W,H,dpr,grad,hor;
-function size(){dpr=Math.min(devicePixelRatio||1,1.5);W=cv.clientWidth;H=cv.clientHeight;cv.width=W*dpr;cv.height=H*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);
-  hor=H*.42;grad=ctx.createRadialGradient(W/2,hor,0,W/2,hor,W*.35);grad.addColorStop(0,'rgba(255,43,214,.22)');grad.addColorStop(1,'rgba(255,43,214,0)');}
+let Q=Math.min(devicePixelRatio||1,1); // render scale; lowered automatically on slow devices
+function size(){W=cv.clientWidth;H=cv.clientHeight;cv.width=Math.round(W*Q);cv.height=Math.round(H*Q);ctx.setTransform(Q,0,0,Q,0,0);hor=H*.42;}
 size(); addEventListener('resize',()=>{size();kick()},{passive:true});
 const ROWS=28, COLS=36, rowStyle=[...Array(ROWS)].map((_,j)=>`rgba(200,255,0,${(.12+.75*(j/ROWS)).toFixed(3)})`);
 const px=new Float32Array(ROWS*COLS), py=new Float32Array(ROWS*COLS);
@@ -571,13 +572,12 @@ function drawField(){
   ctx.strokeStyle='rgba(200,255,0,.28)';ctx.beginPath();
   for(let i=0;i<COLS;i++){ctx.moveTo(px[i],py[i]);for(let j=1;j<ROWS;j++)ctx.lineTo(px[j*COLS+i],py[j*COLS+i]);}
   ctx.stroke();
-  ctx.fillStyle=grad;ctx.fillRect(0,0,W,H);
   const sy=(ft*120)%H; ctx.fillStyle='rgba(242,242,238,.05)';ctx.fillRect(0,sy,W,2);
 }
 
 /* one loop for everything; sleeps when nothing is visible */
-let running=false;
-function kick(){if(!running){running=true;requestAnimationFrame(frame)}}
+let running=false, lastT=0, avgDt=16.7, samples=0, level=0, fieldEvery=0, lastField=0;
+function kick(){if(!running){running=true;lastT=0;requestAnimationFrame(frame)}}
 function frame(t){
   let busy=false;
   if(finePointer){
@@ -587,8 +587,13 @@ function frame(t){
   }
   if(heroOn && !document.hidden){
     busy=true;
-    if(!reduce) ft+=.012;
-    drawField();
+    // adaptive quality: watch real frame times and step down if the device struggles
+    if(lastT){const dt=t-lastT; if(dt<200){avgDt=avgDt*.92+dt*.08; samples++;}}
+    lastT=t;
+    if(samples>90 && level<2 && avgDt>21){level++;samples=0;
+      if(level===1){Q=Math.min(Q,.75);fieldEvery=33}else{Q=.5;fieldEvery=50}
+      size();}
+    if(t-lastField>=fieldEvery-2){ if(!reduce) ft+=.012*Math.min(4,Math.max(1,(t-lastField)/16.7)); lastField=t; drawField(); }
     if(t-lastWarp>33){ // ~30fps is plenty for the warp
       lastWarp=t;
       const d=finePointer?Math.hypot(mx-innerWidth/2,my-innerHeight/2)/Math.hypot(innerWidth/2,innerHeight/2):1;
